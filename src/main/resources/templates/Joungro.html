@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .container {
+            width: 1420px;
+            margin: 0 auto;
+        }
+        .header {
+            width: 1400px;
+            text-align: center;
+            font-size: 30px;
+            margin: 14px 0 14px 0;
+            background-color: #f2f2f2;
+        }
+        #grade {
+            display: block;
+            width: 1200px;
+            font-size: 32px;
+            font-weight: bold; /* 글꼴 굵기 설정 */
+            font-family: Arial, sans-serif; /* 글꼴 설정 */
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        종로구 대기 정보
+    </div>
+    <div class="grade" id="grade"></div>
+    <iframe src="http://localhost:3000/d-solo/e57866e4-c4df-4e05-819a-0e615f177577/test1?orgId=1&refresh=5s&theme=light&panelId=1" width="1400" height="700" frameborder="0"></iframe>
+    <iframe src="http://localhost:3000/d-solo/e57866e4-c4df-4e05-819a-0e615f177577/test1?orgId=1&refresh=5s&theme=light&panelId=6" width="700" height="350" frameborder="0"></iframe>
+    <iframe src="http://localhost:3000/d-solo/e57866e4-c4df-4e05-819a-0e615f177577/test1?orgId=1&refresh=5s&theme=light&panelId=5" width="700" height="350" frameborder="0"></iframe>
+    <iframe src="http://localhost:3000/d-solo/e57866e4-c4df-4e05-819a-0e615f177577/test1?orgId=1&refresh=5s&theme=light&panelId=7" width="700" height="350" frameborder="0"></iframe>
+    <iframe src="http://localhost:3000/d-solo/e57866e4-c4df-4e05-819a-0e615f177577/test1?orgId=1&refresh=5s&theme=light&panelId=4" width="700" height="350" frameborder="0"></iframe>
+    <iframe src="http://localhost:3000/d-solo/e57866e4-c4df-4e05-819a-0e615f177577/test1?orgId=1&refresh=5s&theme=light&panelId=3" width="700" height="350" frameborder="0"></iframe>
+    <iframe src="http://localhost:3000/d-solo/e57866e4-c4df-4e05-819a-0e615f177577/test1?orgId=1&refresh=5s&theme=light&panelId=2" width="700" height="350" frameborder="0"></iframe>
+</div>
+
+<script th:inline="javascript">
+
+    var firstPm10Value = [[${firstPm10Value}]];
+    var firstPm25Value = [[${firstPm25Value}]];
+
+    function calculateGrade(pm10Value, pm25Value) {
+        var pm10Grade = calculatePm10Grade(pm10Value);
+        var pm25Grade = calculatePm25Grade(pm25Value);
+
+        return { pm10: pm10Grade, pm25: pm25Grade };
+    }
+
+    // PM10 등급 계산
+    function calculatePm10Grade(pm10Value) {
+        if (pm10Value >= 0 && pm10Value <= 30) {
+            return { text: "좋음", value: pm10Value, color: "blue" };
+        } else if (pm10Value >= 31 && pm10Value <= 80) {
+            return { text: "보통", value: pm10Value, color: "green" };
+        } else if (pm10Value >= 81 && pm10Value <= 150) {
+            return { text: "나쁨", value: pm10Value, color: "orange" };
+        } else {
+            return { text: "매우 나쁨", value: pm10Value, color: "red" };
+        }
+    }
+
+    // PM2.5 등급 계산
+    function calculatePm25Grade(pm25Value) {
+        if (pm25Value >= 0 && pm25Value <= 15) {
+            return { text: "좋음", value: pm25Value, color: "blue" };
+        } else if (pm25Value >= 16 && pm25Value <= 35) {
+            return { text: "보통", value: pm25Value, color: "green" };
+        } else if (pm25Value >= 36 && pm25Value <= 75) {
+            return { text: "나쁨", value: pm25Value, color: "orange" };
+        } else {
+            return { text: "매우 나쁨", value: pm25Value, color: "red" };
+        }
+    }
+
+    // 등급을 표시하는 함수
+    function displayGrade() {
+        // 등급 계산
+        var grades = calculateGrade(firstPm10Value, firstPm25Value);
+
+        // 등급을 표시할 요소 찾기
+        var gradeElement = document.getElementById("grade");
+
+        // PM10 등급 색상 지정
+        var pm10Color;
+        if (grades.pm10.text.includes("좋음")) {
+            pm10Color = "blue";
+        } else if (grades.pm10.text.includes("보통")) {
+            pm10Color = "green";
+        } else if (grades.pm10.text.includes("나쁨")) {
+            pm10Color = "orange";
+        } else {
+            pm10Color = "red";
+        }
+
+        // PM2.5 등급 색상 지정
+        var pm25Color;
+        if (grades.pm25.text.includes("좋음")) {
+            pm25Color = "blue";
+        } else if (grades.pm25.text.includes("보통")) {
+            pm25Color = "green";
+        } else if (grades.pm25.text.includes("나쁨")) {
+            pm25Color = "orange";
+        } else {
+            pm25Color = "red";
+        }
+
+        // 등급 표시
+        gradeElement.innerHTML = "<span style='color: " + pm10Color + "'>현재 미세먼지 등급: " + grades.pm10.text + "/수치: " + grades.pm10.value + ", " + "</span>" +
+            "<span style='color: " + pm25Color + "'>현재 초미세먼지 등급: " + grades.pm25.text + "/수치: " + grades.pm25.value + "" + "</span>";
+    }
+
+    // 페이지 로드 시 등급 표시
+    window.onload = function() {
+        displayGrade();
+    };
+</script>
+
+</body>
+</html>

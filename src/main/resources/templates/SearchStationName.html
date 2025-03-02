@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>대기오염 데이터 검색</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #1675c4;
+    }
+
+    form {
+      margin-top: 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"] {
+      width: calc(100% - 10px);
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .list-button {
+      background-color: #1675c4;
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: block;
+      width: 100%;
+      font-size: 16px;
+      margin-top: 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .list-button:hover {
+      background-color: #12538c;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>측정소명으로 검색하세요</h1>
+  <form action="/SearchStationName" method="post">
+    <label for="stationName">측정소명</label>
+    <input type="text" id="stationName" name="stationName" placeholder="측정소명을 입력하세요" required>
+    <button class="list-button" type="submit">측정소명으로 대기오염 데이터 검색</button>
+  </form>
+</div>
+</body>
+</html>
